@@ -110,7 +110,7 @@ Example:
 
       add: function(theme) {
         this.themes.forEach(function(_theme) {
-          if (themes[_theme].name === theme.name) {
+          if (_theme.name === theme.name) {
             return console.warn(theme.name.concat('::name-used'));
           }
         });
