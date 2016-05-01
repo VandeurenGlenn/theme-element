@@ -115,6 +115,14 @@ Example:
           }
         });
         this.push('themes', theme);
+      },
+
+      remove: function(name) {
+        this.themes.forEach(function(theme, i) {
+          if (theme.name === name) {
+            this.splice('themes', i, 1);
+          }
+        }.bind(this));
       }
     });
   </script>
