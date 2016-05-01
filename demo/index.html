@@ -35,7 +35,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         </style>
 
-        <button type="button" name="toggle-theme">Toggle Theme</button>
+        <button type="button" name="light">Light Theme</button>
+        <button type="button" name="dark">Dark Theme</button>
 
         <theme-element themes='[{"name": "light", "href": "/components/themes/light-theme.html"},{"name": "dark", "href": "/components/themes/dark-theme.html"}]'></theme-element>
 
@@ -60,15 +61,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var toggleBtn = document.querySelector('button[name="toggle-theme"]');
       var ul = document.querySelector('ul');
 
-      toggleBtn.addEventListener('click', function() {
-        var selected = seedElement.selected;
-        if (selected === 'light') {
-          selected = 'dark';
-        } else {
-          selected = 'light';
-        }
-        seedElement.selected = selected;
-      }.bind(this));
+      Array.from(document.querySelectorAll('button')).forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          seedElement.selected = e.target.name;
+        });
+      });
 
       document.addEventListener("custom-style-import-succes", function(e) {
         var result = e.detail;
