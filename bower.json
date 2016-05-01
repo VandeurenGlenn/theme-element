@@ -1,0 +1,29 @@
+{
+  "name": "theme-element",
+  "version": "1.0.0",
+  "authors": [
+    "Glenn Vandeuren <vandeurenglenn@gmail.com>"
+  ],
+  "description": "An element providing a solution handling themes",
+  "keywords": [
+    "web-components",
+    "polymer",
+    "theme-element"
+  ],
+  "main": "theme-element.html",
+  "license": "http://vandeurenglenn.github.io/LICENSE.txt",
+  "homepage": "https://github.com/vandeurenglenn>/theme-element/",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0",
+    "custom-style-import": "VandeurenGlenn/custom-style-import#^0.2.0",
+    "themes": "VandeurenGlenn/themes#^0.0.2"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0"
+  }
+}
