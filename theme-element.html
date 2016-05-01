@@ -73,12 +73,20 @@ Example:
         return this.host ? this.host : this.parentElement;
       },
 
-      get componentsLocation() {
-        var attr = this.getAttribute('components-location');
-        if (attr) {
-          return this.getAttribute('components-location');
-        }
-        return 'bower_components';
+      attached: function() {
+        var url = this.resolveUrl('../custom-style-import/custom-style-import.html');
+        this.importHref(url, function() {
+          this._csi = document.createElement('custom-style-import');
+          this._csi.host = this._host;
+          this.appendChild(this._csi);
+          this.csiReady = true;
+        }.bind(this), function(error) {
+          console.warn(error);
+        });
+      },
+
+      detached: function() {
+        Polymer.dom(this.root).removeChild(this._csi);
       },
 
       /**
@@ -98,22 +106,6 @@ Example:
             }
           }.bind(this));
         }
-      },
-
-      attached: function() {
-        var url = this.resolveUrl('../custom-style-import/custom-style-import.html');
-        this.importHref(url, function() {
-          this._csi = document.createElement('custom-style-import');
-          this._csi.host = this._host;
-          this.appendChild(this._csi);
-          this.csiReady = true;
-        }.bind(this), function(error) {
-          console.warn(error);
-        });
-      },
-
-      detached: function() {
-        Polymer.dom(this.root).removeChild(this._csi);
       }
     });
   </script>
