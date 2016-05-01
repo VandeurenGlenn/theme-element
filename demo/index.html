@@ -1,0 +1,87 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2016 Glenn Vandeuren. All rights reserved.
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>theme-element Demo</title>
+    <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="../theme-element.html">
+  </head>
+  <body unresolved>
+    <dom-module id="demo-app">
+      <template>
+        <style>
+         :root {
+           --primary-color: black;
+           --primary-text-color: white;
+         }
+          header {
+            background: var(--primary-color);
+            border-color: var(--divider-color);
+            border: 1px solid;
+          }
+          h1 {
+            color: var(--primary-text-color);
+          }
+        </style>
+
+        <button type="button" name="toggle-theme">Toggle Theme</button>
+
+        <theme-element themes='[{"name": "light", "href": "/components/themes/light-theme.html"},{"name": "dark", "href": "/components/themes/dark-theme.html"}]' components-location="components"></theme-element>
+
+        <header>
+          <h1>TITLE</h1>
+        </header>
+        <ul>
+          <!-- list with variables  -->
+        </ul>
+      </template>
+      <script>
+        Polymer({
+          is: 'demo-app'
+        });
+      </script>
+    </dom-module>
+
+    <demo-app></demo-app>
+
+    <script>
+      var seedElement = document.querySelector('theme-element');
+      var toggleBtn = document.querySelector('button[name="toggle-theme"]');
+      var ul = document.querySelector('ul');
+
+      toggleBtn.addEventListener('click', function() {
+        var selected = seedElement.selected;
+        if (selected === 'light') {
+          selected = 'dark';
+        } else {
+          selected = 'light';
+        }
+        seedElement.selected = selected;
+      }.bind(this));
+
+      document.addEventListener("custom-style-import-succes", function(e) {
+        var result = e.detail;
+
+        for (var variable in result) {
+          if (result.hasOwnProperty(variable)) {
+            ul.innerHTML += '<li>' + variable.concat(': ') + result[variable] + '<\/li>';
+          }
+        }
+
+      }.bind(this));
+
+    </script>
+
+  </body>
+</html>

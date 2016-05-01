@@ -1,0 +1,120 @@
+<!--
+@license
+Copyright (c) 2016 Glenn Vandeuren. All rights reserved.
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+An element providing a solution handling themes.
+
+Example:
+
+    <theme-element></theme-element>
+
+Example:
+
+    <theme-element themes='[{name: "dark", href: "dark-theme.html"}]'></theme-element>
+
+@demo demo/index.html
+@hero hero.svg
+-->
+
+<dom-module id="theme-element">
+  <template>
+    <style>
+      :host {
+        display: none;
+      }
+    </style>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'theme-element',
+
+      properties: {
+
+        /**
+         * Describes the themes to use.
+         *
+         * @type {{name: string, href: string}}
+         */
+        themes: {
+          type: Array,
+          value: function() {
+            return [{
+              name:  'light',
+              href: this.resolveUrl('../themes/light-theme.html'),
+            }];
+          }
+        },
+
+        /**
+         * The 'theme' used
+         */
+        selected: {
+          type: String,
+          value: 'light'
+        },
+
+        /**
+         * The target that will be updated with the new customStyles
+         * from the 'selected' theme.
+         */
+        host: HTMLElement
+      },
+
+      observers: [
+        '__update__(csiReady, _csi, themes, selected)'
+      ],
+
+      get _host() {
+        return this.host ? this.host : this.parentElement;
+      },
+
+      get componentsLocation() {
+        var attr = this.getAttribute('components-location');
+        if (attr) {
+          return this.getAttribute('components-location');
+        }
+        return 'bower_components';
+      },
+
+      /**
+       * Runs on property updates.
+       *
+       * @param {string} ready A Boolean repressenting the ready status.
+       * @param {string} csi The 'custom-style-import' element.
+       * @param {string} themes An array of themes.
+       * @param {string} selected The current selected theme.
+       */
+      __update__: function(ready, csi, themes, selected) {
+        if (ready) {
+          themes.forEach(function(theme) {
+            if (theme.name === selected) {
+              csi.href = theme.href;
+              return;
+            }
+          }.bind(this));
+        }
+      },
+
+      attached: function() {
+        var url = this.resolveUrl('../custom-style-import/custom-style-import.html');
+        this.importHref(url, function() {
+          this._csi = document.createElement('custom-style-import');
+          this._csi.host = this._host;
+          this.appendChild(this._csi);
+          this.csiReady = true;
+        }.bind(this), function(error) {
+          console.warn(error);
+        });
+      },
+
+      detached: function() {
+        Polymer.dom(this.root).removeChild(this._csi);
+      }
+    });
+  </script>
+</dom-module>
